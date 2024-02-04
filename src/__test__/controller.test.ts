@@ -10,7 +10,7 @@ import {
 } from '../controllers/task.controller';
 import { TaskInterface } from '../interfaces/TaskInterface';
 import mongoose from 'mongoose';
-// Extend the TaskModel type for testing purposes
+
 interface TaskModelTest extends mongoose.Model<mongoose.Document> {
     find: jest.Mock;
     findOne: jest.Mock;
@@ -19,13 +19,11 @@ interface TaskModelTest extends mongoose.Model<mongoose.Document> {
     countDocuments: jest.Mock;
     save: jest.Mock;
   }
-  
-  // Cast the mocked TaskModel to the extended interface
+
   const MockedTaskModel = TaskModel as unknown as TaskModelTest;
   
-  // Adjust your existing mock setup if necessary
   jest.mock('../model/TaskModel', () => ({
-    __esModule: true, // Required for ES Module compatibility
+    __esModule: true,
     default: {
       find: jest.fn().mockReturnThis(),
       findOne: jest.fn().mockReturnThis(),
@@ -37,14 +35,12 @@ interface TaskModelTest extends mongoose.Model<mongoose.Document> {
   }));
 jest.mock('../model/TaskModel', () => {
     return {
-      // Mock static methods
       find: jest.fn(),
       findOne: jest.fn(),
       findOneAndUpdate: jest.fn(),
       findByIdAndDelete: jest.fn(),
       countDocuments: jest.fn(),
-      // Return a mock object from the constructor
-      __esModule: true, // This property is needed when mocking a module with default export
+      __esModule: true,
       default: jest.fn().mockImplementation(() => ({
         save: jest.fn().mockResolvedValue({
           name: 'Test Task',

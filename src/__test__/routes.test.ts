@@ -32,5 +32,4 @@ describe('Task Router', () => {
     expect(taskController.getTasks).toHaveBeenCalled();
   });
 
-  // Add tests for each route following the pattern above
 });
