@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: Task Management API
+  description: This API allows to manage tasks with user authentication.
+  version: "1.0"
+servers:
+  - url: http://localhost:5000/api
+paths:
+  /task:
+    post:
+      summary: Creates a new task
+      tags:
+        - Task
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    get:
+      summary: Retrieves a list of tasks
+      tags:
+        - Task
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: User ID to filter tasks by
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+      responses:
+        '200':
+          description: A list of tasks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+                  currentPage:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalTasks:
+                    type: integer
+        '400':
+          description: Bad request
+        '404':
+          description: User has no tasks
+        '500':
+          description: Internal server error
+  /task/{id}:
+    get:
+      summary: Retrieves a specific task
+      tags:
+        - Task
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Task ID
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: User ID to validate task ownership
+      responses:
+        '200':
+          description: Specific task data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+    put:
+      summary: Updates a specific task
+      tags:
+        - Task
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Task ID
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: User ID to validate task ownership
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdateInput'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '404':
+          description: Task not found or user not authorized
+        '500':
+          description: Internal server error
+    delete:
+      summary: Deletes a specific task
+      tags:
+        - Task
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Task ID to delete
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: User ID to validate task ownership
+      responses:
+        '200':
+          description: Task deleted successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Task not found or user not authorized to delete
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    bearerAuth:   # Arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # Optional, specifies the format of the bearer token as JWT
+  schemas:
+    TaskInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        isDone:
+          type: boolean
+        userId:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+      required:
+        - name
+        - description
+        - userId
+    TaskUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - name
+        - description
+    Task:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isDone:
+          type: boolean
+        userId:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string

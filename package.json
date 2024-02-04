@@ -1,0 +1,50 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "build": "tsc && copyfiles -u 1 src/docs/swagger.yaml dist/js",
+    "start": "concurrently \"npm run build\" \"nodemon dist/js/server.js\"",
+    "test": "jest --detectOpenHandles"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/morgan": "^1.9.9",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^7.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "express-jwt": "^8.4.1",
+    "express-openid-connect": "^2.17.1",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "mongoose": "^8.1.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.3",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@shelf/jest-mongodb": "^4.2.0",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.11.16",
+    "@types/supertest": "^6.0.2",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/yamljs": "^0.2.34",
+    "copyfiles": "^2.4.1",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
